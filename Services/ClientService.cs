@@ -11,7 +11,7 @@ public class ClientService : IClientService
     public ClientService(AppDbContext context) => _context = context;
     public async Task<IEnumerable<ClientDto>> GetClients()
     {
-        var companyClients = await _context.CompanyClients.Select(client => new CompanyClientDto
+        var companyClients = await _context.CompanyClients.Where(c => !c.IsDeleted).Select(client => new CompanyClientDto
         {
             Id = client.Id,
             Address = client.Address,
@@ -21,7 +21,7 @@ public class ClientService : IClientService
             KRS = client.KRS
         }).ToListAsync();
         
-        var individualClients = await _context.IndividualClients.Select(client => new IndividualClientDto()
+        var individualClients = await _context.IndividualClients.Where(c => !c.IsDeleted).Select(client => new IndividualClientDto()
         {
             Id = client.Id,
             Address = client.Address,

@@ -1,4 +1,5 @@
 ﻿namespace APBD_PROJEKT.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 [Table("CompanyClients")]
 public class CompanyClient : Client
