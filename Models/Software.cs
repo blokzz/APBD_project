@@ -12,4 +12,5 @@ public class Software
     public string CurrentVersion { get; set; } = null!;
     public string Category { get; set; } = null!;
     public ICollection<Contract> Contracts { get; set; } = new List<Contract>();
+    public ICollection<SoftwareDiscount> SoftwareDiscounts { get; set; } = new List<SoftwareDiscount>();
 } 

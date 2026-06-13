@@ -5,4 +5,9 @@ namespace APBD_PROJEKT.Services;
 public interface IClientService
 {
     Task<IEnumerable<ClientDto>> GetClients();
+    
+    Task CreateIndividualClient(CreateIndividualClientDto client);
+    Task CreateCompanyClient(CreateCompanyClientDto client);
+    Task DeleteClient(int id);
+    Task UpdateClient(int id, UpdateClientDto dto);
 }
