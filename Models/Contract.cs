@@ -23,8 +23,8 @@ public class Contract
     [Required]
     [Column(TypeName = "decimal(10,2)")]
     public decimal Price { get; set; }
-    
-    public int UpdatedSupportYears { get; set; }
+
+    public int UpdatedSupportYears { get; set; } = 1;
     
     public bool IsSigned { get; set; }
     
