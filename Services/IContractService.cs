@@ -1,6 +1,8 @@
 ﻿namespace APBD_PROJEKT.Services;
-
-public class IContractService
+using Dtos;
+public interface IContractService
 {
+    Task CreateContract(CreateContractDto contract);
     
+    Task AddPayment(int contractId , decimal amount);
 }

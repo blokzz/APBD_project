@@ -3,6 +3,8 @@ using APBD_PROJEKT.Dtos.Clients;
 using  APBD_PROJEKT.Models;
 using Microsoft.EntityFrameworkCore;
 using APBD_PROJEKT.Data;
+using APBD_PROJEKT.Exceptions;
+
 namespace APBD_PROJEKT.Services;
 using  System.Text.RegularExpressions;
 
@@ -11,7 +13,7 @@ public class ClientService : IClientService
     private readonly AppDbContext _context;
 
     public ClientService(AppDbContext context) => _context = context;
-    public async Task<IEnumerable<ClientDto>> GetClients()
+    public async Task<IEnumerable<object>> GetClients()
     {
         var companyClients = await _context.CompanyClients.Where(c => !c.IsDeleted).Select(client => new CompanyClientDto
         {
@@ -34,7 +36,7 @@ public class ClientService : IClientService
             PESEL =  client.PESEL
         }).ToListAsync();
 
-        List<ClientDto> clientList= new List<ClientDto>();
+        List<object> clientList= new List<object>();
         clientList.AddRange(companyClients);
         clientList.AddRange(individualClients);
         
@@ -49,7 +51,10 @@ public class ClientService : IClientService
         }
         if (!Regex.IsMatch(client.PESEL, @"^\d{11}$"))
             throw new ArgumentException("Nieprawidłowy PESEL");
-        
+        var peselExists = await _context.IndividualClients
+            .AnyAsync(c => c.PESEL == client.PESEL);
+        if (peselExists)
+            throw new ConflictException("Klient z takim PESEL-em już istnieje");
         var newClient = new IndividualClient
         {
             FirstName = client.FirstName,
@@ -72,6 +77,10 @@ public class ClientService : IClientService
         }
         if (!Regex.IsMatch(client.KRS, @"^\d{10}$"))
             throw new ArgumentException("Nieprawidłowy krs");
+        var krsExists = await _context.CompanyClients
+            .AnyAsync(c => c.KRS == client.KRS);
+        if (krsExists)
+            throw new ConflictException("Firma z takim KRS-em już istnieje");
         var newClient = new CompanyClient
         {
             Email = client.Email,
@@ -90,7 +99,7 @@ public class ClientService : IClientService
         var client = await _context.Clients.FindAsync(id);
     
         if (client == null)
-            throw new KeyNotFoundException("Klient nie istnieje");
+            throw new NotFoundException("Klient nie istnieje");
 
         if (client is IndividualClient individual)
         {
@@ -114,7 +123,7 @@ public class ClientService : IClientService
         var client = await _context.Clients.FindAsync(id);
     
         if (client == null)
-            throw new KeyNotFoundException("Klient nie istnieje");
+            throw new NotFoundException("Klient nie istnieje");
         
         if (dto.Address != null) client.Address = dto.Address;
         if (dto.Email != null) client.Email = dto.Email;

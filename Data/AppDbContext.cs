@@ -7,15 +7,28 @@ public class AppDbContext : DbContext
     public DbSet<Client> Clients { get; set; }
     public DbSet<CompanyClient> CompanyClients { get; set; }
     public DbSet<IndividualClient> IndividualClients { get; set; }
+    
+    public DbSet<ContractPayments> ContractPayments { get; set; }
     public DbSet<Software> Softwares { get; set; }
     public DbSet<Contract> Contracts { get; set; }
     public DbSet<Discount> Discounts { get; set; }
     public DbSet<SoftwareDiscount> SoftwareDiscounts { get; set; }
+    public DbSet<Subscription> Subscriptions { get; set; }
+    public DbSet<SubscriptionPayment> SubscriptionPayments { get; set; }
+    public DbSet<Employee> Employees { get; set; }
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Employee>().HasData(new Employee
+        {
+            Id = 1,
+            Login = "admin",
+            PasswordHash = "$2a$11$gKSs4tyRgaghlPGq24qNxeJJ8Cz6tzRQbjA6erAWxURs3mZ2Xt4Y2",
+            Role = "Admin"
+        });
+        
         modelBuilder.Entity<SoftwareDiscount>()
             .HasKey(sd => new { sd.DiscountId, sd.SoftwareId });
 

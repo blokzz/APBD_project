@@ -1,6 +1,7 @@
 ﻿namespace APBD_PROJEKT.Services;
 
-public class IRevenueService
+public interface IRevenueService
 {
-    
+    Task<decimal> GetCurrentRevenue(int? softwareId, string currency);
+    Task<decimal> GetForecastRevenue(int? softwareId, string currency);
 }
