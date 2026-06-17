@@ -15,4 +15,6 @@ public class Software
     public decimal YearlyLicensePrice { get; set; }
     public ICollection<Contract> Contracts { get; set; } = new List<Contract>();
     public ICollection<SoftwareDiscount> SoftwareDiscounts { get; set; } = new List<SoftwareDiscount>();
+    
+    public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 } 

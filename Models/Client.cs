@@ -1,5 +1,10 @@
-﻿namespace APBD_PROJEKT.Models;
+﻿using APBD_PROJEKT.Dtos.Clients;
 
+namespace APBD_PROJEKT.Models;
+using System.Text.Json.Serialization;
+
+[JsonDerivedType(typeof(IndividualClientDto), "individual")]
+[JsonDerivedType(typeof(CompanyClientDto), "company")]
 public abstract class Client
 {
     
@@ -11,4 +16,6 @@ public abstract class Client
     public bool IsDeleted { get; set; } = false;
     
     public ICollection<Contract> Contracts { get; set; } = new List<Contract>();
+    
+    public ICollection<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 }
