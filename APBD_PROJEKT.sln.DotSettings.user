@@ -1,0 +1,10 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f4c39d75_002Dfc5f_002D48ee_002Da2c4_002D6fbdd7ccf3ab/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="CreateContract_ClientNotFound_ThrowsNotFoundException" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::4D358EFA-FD62-4B5D-8778-B18600B7CB0D::net9.0::apbd.Tests.ClientServiceTests.CreateIndividualClient_ValidData_CreatesClient&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4D358EFA-FD62-4B5D-8778-B18600B7CB0D::net9.0::apbd.Tests.ClientServiceTests.CreateIndividualClient_InvalidPESEL_ThrowsException&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4D358EFA-FD62-4B5D-8778-B18600B7CB0D::net9.0::APBD_PROJEKT.apbd.Tests.RevenueServiceTests.GetCurrentRevenue_OnlySignedContracts&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4D358EFA-FD62-4B5D-8778-B18600B7CB0D::net9.0::apbd.Tests.ContractServiceTests.CalculatePrice_VariousInputs_ReturnsCorrectValue&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::4D358EFA-FD62-4B5D-8778-B18600B7CB0D::net9.0::apbd.Tests.ContractServiceTests.CreateContract_ClientNotFound_ThrowsNotFoundException&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
