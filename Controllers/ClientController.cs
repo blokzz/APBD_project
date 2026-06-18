@@ -70,6 +70,7 @@ public class ClientController : ControllerBase
     }
     
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         try

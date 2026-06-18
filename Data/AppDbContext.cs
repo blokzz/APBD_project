@@ -54,5 +54,27 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<CompanyClient>()
             .HasIndex(c => c.KRS)
             .IsUnique();
+        
+        
+        modelBuilder.Entity<Software>().HasData(
+            new Software
+            {
+                Id = 1,
+                Name = "FinanceApp",
+                Description = "System finansowy",
+                CurrentVersion = "1.0",
+                Category = "Finanse",
+                YearlyLicensePrice = 5000m
+            },
+            new Software
+            {
+                Id = 2,
+                Name = "EduPlatform",
+                Description = "Platforma edukacyjna",
+                CurrentVersion = "2.1",
+                Category = "Edukacja",
+                YearlyLicensePrice = 3000m
+            }
+        );
     }
 }

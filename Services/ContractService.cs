@@ -55,13 +55,11 @@ public class ContractService : IContractService
 
         decimal priceTotal = 0;
         
-        if (discountValue > 0)
-        {
-            priceTotal = softwareExists.YearlyLicensePrice 
+        priceTotal = softwareExists.YearlyLicensePrice 
                          * (1 - discountValue / 100m) 
                          * (specialClient ? 0.95m : 1m) 
                          + (contract.UpdateSupportYears - 1) * 1000m;
-        }
+        
 
         var finalContract = new Contract
         {

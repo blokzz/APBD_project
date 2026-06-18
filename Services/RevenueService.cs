@@ -12,31 +12,49 @@ public class RevenueService : IRevenueService
 
     public RevenueService(AppDbContext context) => _context = context;
     
-    public async Task<decimal> GetCurrentRevenue(int? softwareId, string currency)
+public async Task<decimal> GetCurrentRevenue(int? softwareId, string currency)
+{
+    var contractQuery = _context.Contracts.Where(c => c.IsSigned);
+    if (softwareId.HasValue)
+        contractQuery = contractQuery.Where(c => c.SoftwareId == softwareId.Value);
+    var contractRevenue = await contractQuery.SumAsync(c => c.Price);
+    
+    var subPaymentQuery = _context.SubscriptionPayments
+        .Where(sp => sp.Subscription.IsActive);
+    if (softwareId.HasValue)
+        subPaymentQuery = subPaymentQuery.Where(sp => sp.Subscription.SoftwareId == softwareId.Value);
+    var subscriptionRevenue = await subPaymentQuery.SumAsync(sp => sp.Amount);
+
+    return await ConvertCurrency(contractRevenue + subscriptionRevenue, currency);
+}
+
+public async Task<decimal> GetForecastRevenue(int? softwareId, string currency)
+{
+    var contractQuery = _context.Contracts.AsQueryable();
+    if (softwareId.HasValue)
+        contractQuery = contractQuery.Where(c => c.SoftwareId == softwareId.Value);
+    var contractRevenue = await contractQuery.SumAsync(c => c.Price);
+    
+    var subQuery = _context.Subscriptions.Where(s => s.IsActive);
+    if (softwareId.HasValue)
+        subQuery = subQuery.Where(s => s.SoftwareId == softwareId.Value);
+    
+    var subPaymentQuery = _context.SubscriptionPayments
+        .Where(sp => sp.Subscription.IsActive);
+    if (softwareId.HasValue)
+        subPaymentQuery = subPaymentQuery.Where(sp => sp.Subscription.SoftwareId == softwareId.Value);
+    var currentSubRevenue = await subPaymentQuery.SumAsync(sp => sp.Amount);
+    
+    var subscriptions = await subQuery.ToListAsync();
+    var projectedRevenue = 0m;
+    foreach (var sub in subscriptions)
     {
-        var query = _context.Contracts.Where(c => c.IsSigned);
-    
-        if (softwareId.HasValue)
-            query = query.Where(c => c.SoftwareId == softwareId.Value);
-    
-        var contractRevenue = await query.SumAsync(c => c.Price);
-    
-        // subsrykbcje jeszcze
-    
-        return await ConvertCurrency(contractRevenue, currency);
+        var renewalsPerYear = 12 / sub.RenewalPeriodMonths;
+        projectedRevenue += sub.Price * renewalsPerYear;
     }
-    
-    public async Task<decimal> GetForecastRevenue(int? softwareId, string currency)
-    {
-        var query = _context.Contracts.AsQueryable();
-    
-        if (softwareId.HasValue)
-            query = query.Where(c => c.SoftwareId == softwareId.Value);
-    
-        var contractRevenue = await query.SumAsync(c => c.Price);
-    
-        return await ConvertCurrency(contractRevenue, currency);
-    }
+
+    return await ConvertCurrency(contractRevenue + currentSubRevenue + projectedRevenue, currency);
+}
     
     private async Task<decimal> ConvertCurrency(decimal amountPln, string currency)
     {
